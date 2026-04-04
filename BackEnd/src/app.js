@@ -1,6 +1,8 @@
 import express from "express"
 
 import authRouter from "./routes/auth.routes.js";
+import questionRouter from "./routes/question.routes.js";
+import quizRouter from "./routes/quiz.routes.js";
 
 const app = express() ;
 
@@ -11,6 +13,8 @@ app.get('/', async(req,res)=>{
 })
 
 app.use("/api/auth", authRouter);
+app.use("/api/quizzes", quizRouter);
+app.use("/api/questions", questionRouter);
 
 
 export default app ;

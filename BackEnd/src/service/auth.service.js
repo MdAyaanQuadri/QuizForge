@@ -105,3 +105,25 @@ export const userLoginService = async ({ email, password }) => {
     throw new Error(error.message || "User login failed");
   }
 };
+
+export const userLogoutService = async () => ({
+  success: true,
+  message: "Logout successful. Remove the token on the client side.",
+});
+
+export const getCurrentUserService = async (userId) => {
+  try {
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      success: true,
+      user,
+    };
+  } catch (error) {
+    throw new Error(error.message || "Failed to fetch user details");
+  }
+};

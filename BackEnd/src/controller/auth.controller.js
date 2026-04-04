@@ -1,5 +1,7 @@
 import {
+  getCurrentUserService,
   userLoginService,
+  userLogoutService,
   userSignupService,
 } from "../service/auth.service.js";
 import { validateUserInput } from "../validation/user.validation.js";
@@ -44,6 +46,32 @@ export const loginUser = async (req, res) => {
     return res.status(401).json({
       success: false,
       message: error.message || "Login failed",
+    });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    const result = await userLogoutService();
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Logout failed",
+    });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const result = await getCurrentUserService(req.user._id);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(error.message === "User not found" ? 404 : 400).json({
+      success: false,
+      message: error.message || "Failed to fetch user details",
     });
   }
 };
