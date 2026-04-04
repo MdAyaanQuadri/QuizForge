@@ -1,0 +1,5 @@
+devPackages.txt
+packages.txt
+node_modules
+.env
+*.env
