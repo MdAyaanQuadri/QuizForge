@@ -3,7 +3,7 @@ import { z } from "zod";
 // ai genrated since i dont know regex
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>_\-\\[\]/`~+=;']).+$/;
 
-// makes sure user inputs are in poper format since user can put any data we need validation
+// making user validation 
 export const userValidationSchema = z.object({
   email: z.email("Please provide a valid email address").trim().toLowerCase(),
   username: z
