@@ -161,9 +161,12 @@ export const getQuizByJoiningCodeService = async ({ joiningCode }) => {
 
     assertQuizNotExpired(quiz);
 
+    const totalQuestions = await Question.countDocuments({ quizId: quiz._id });
+
     return {
       success: true,
       quiz,
+      totalQuestions,
     };
   } catch (error) {
     throw new Error(error.message || "Failed to fetch quiz by joining code");

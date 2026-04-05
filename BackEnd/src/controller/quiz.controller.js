@@ -33,7 +33,7 @@ const getQuizStatusCode = (message) => {
 
 export const createQuiz = async (req, res) => {
   try {
-    const validationResult = validateQuizInput(req.body);
+    const validationResult = validateQuizInput(req.body); // returns {data,success,error}
 
     if (!validationResult.success) {
       return res.status(400).json({
@@ -44,7 +44,7 @@ export const createQuiz = async (req, res) => {
 
     const result = await createQuizService({
       creatorId: req.user._id,
-      ...validationResult.data,
+      ...validationResult.data, // spread operator use to put properties of object 
     });
 
     return res.status(201).json(result);

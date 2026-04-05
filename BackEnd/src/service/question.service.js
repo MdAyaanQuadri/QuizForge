@@ -69,7 +69,7 @@ export const bulkCreateQuestionsService = async ({
 export const createQuestionService = async ({ quizId, userId, questionData }) => {
   try {
     const quiz = await getOwnedQuiz({ quizId, userId });
-    assertQuizNotExpired(quiz);
+    assertQuizNotExpire1d(quiz);
 
     const validationResult = validateQuestionInput({
       ...questionData,

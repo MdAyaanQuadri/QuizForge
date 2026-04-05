@@ -206,8 +206,22 @@ export const getLeaderboardService = async ({ quizId }) => {
       quizId,
       submittedAt: { $ne: null },
     })
-      .select("participantName score submittedAt")
-      .sort({ score: -1, submittedAt: 1, createdAt: 1 });
+      .select("participantName score startedAt submittedAt createdAt");
+
+    const sortedLeaderboard = leaderboard.sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+
+      const aTimeTaken = new Date(a.submittedAt) - new Date(a.startedAt);
+      const bTimeTaken = new Date(b.submittedAt) - new Date(b.startedAt);
+
+      if (aTimeTaken !== bTimeTaken) {
+        return aTimeTaken - bTimeTaken;
+      }
+
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
 
     return {
       success: true,
@@ -215,11 +229,13 @@ export const getLeaderboardService = async ({ quizId }) => {
         _id: quiz._id,
         name: quiz.name,
       },
-      leaderboard: leaderboard.map((entry, index) => ({
+      leaderboard: sortedLeaderboard.map((entry, index) => ({
         rank: index + 1,
         participantName: entry.participantName,
         score: entry.score,
+        startedAt: entry.startedAt,
         submittedAt: entry.submittedAt,
+        timeTakenInMs: new Date(entry.submittedAt) - new Date(entry.startedAt),
       })),
     };
   } catch (error) {
